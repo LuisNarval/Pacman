@@ -10,6 +10,10 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 
+#include "PacmanAbilitySystemComponent.h"
+#include "PacmanAttributeSet.h"
+#include "PacmanGAMEPLAYaBILITY.h"
+#include <GameplayEffectTypes.h>
 
 //////////////////////////////////////////////////////////////////////////
 // APacmanCharacter
@@ -49,6 +53,42 @@ APacmanCharacter::APacmanCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+
+
+	//Create the Ability System Component for Pacman
+	AbilitySystemComponent = CreateDefaultSubobject<UPacmanAbilitySystemComponent>("AbilitySystemComponent");
+	AbilitySystemComponent->SetIsReplicated(true);
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Full);
+
+	//Create the Attributes for Pacman
+	Attributes = CreateDefaultSubobject<UPacmanAttributeSet>("Attributes");
+}
+
+UAbilitySystemComponent* APacmanCharacter::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}
+
+//Add the init attributes for Pacman
+void APacmanCharacter::InitializeAttributes()
+{
+	if(AbilitySystemComponent && DefaultAttributeEffect)
+	{
+		FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
+		EffectContext.AddSourceObject(this);
+
+		FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DefaultAttributeEffect, 1, EffectContext);
+
+		if(SpecHandle.IsValid())
+		{
+			FActiveGameplayEffectHandle GEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+		}
+	}
+}
+
+void APacmanCharacter::GiveAbilites()
+{
+
 }
 
 void APacmanCharacter::BeginPlay()

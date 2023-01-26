@@ -3,3 +3,7 @@
 
 #include "PacmanGameplayAbility.h"
 
+UPacmanGameplayAbility::UPacmanGameplayAbility()
+{
+
+}

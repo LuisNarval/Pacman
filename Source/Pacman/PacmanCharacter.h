@@ -5,11 +5,13 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "AbilitySystemInterface.h"
+#include <GameplayEffectTypes.h>
 #include "PacmanCharacter.generated.h"
 
 
 UCLASS(config=Game)
-class APacmanCharacter : public ACharacter
+class APacmanCharacter : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -37,9 +39,27 @@ class APacmanCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* LookAction;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = GAS, meta = (AllowPrivateAccess = "true"))
+	class UPacmanAbilitySystemComponent* AbilitySystemComponent;
+
+	UPROPERTY()
+	class UPacmanAttributeSet* Attributes;
+
 public:
 	APacmanCharacter();
 	
+	virtual class UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+
+	virtual void InitializeAttributes();
+	virtual void GiveAbilites();
+
+	/*Effect that initializes the default attributes for Pacman*/
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
+	TSubclassOf<class UGameplayEffect> DefaultAttributeEffect;
+
+	/*Gameplay abilities for Pacman*/
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
+	TArray<TSubclassOf<class UPacmanGameplayAbility>> DefaultAbilities;
 
 protected:
 

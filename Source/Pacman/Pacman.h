@@ -3,3 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+UENUM(BlueprintType)
+enum class EPacmanAbilityInputID : uint8
+{
+	None,
+	Confirm,
+	Cancel,
+	Punch
+};
