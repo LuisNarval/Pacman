@@ -51,7 +51,10 @@ public:
 	virtual class UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 	virtual void InitializeAttributes();
-	virtual void GiveAbilites();
+	virtual void GiveAbilities();
+
+	virtual void PossessedBy(AController* NewController) override;
+	virtual void OnRep_PlayerState() override;
 
 	/*Effect that initializes the default attributes for Pacman*/
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")

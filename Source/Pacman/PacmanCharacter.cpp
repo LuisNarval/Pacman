@@ -12,7 +12,7 @@
 
 #include "PacmanAbilitySystemComponent.h"
 #include "PacmanAttributeSet.h"
-#include "PacmanGAMEPLAYaBILITY.h"
+#include "PacmanGameplayAbility.h"
 #include <GameplayEffectTypes.h>
 
 //////////////////////////////////////////////////////////////////////////
@@ -86,9 +86,53 @@ void APacmanCharacter::InitializeAttributes()
 	}
 }
 
-void APacmanCharacter::GiveAbilites()
+void APacmanCharacter::GiveAbilities()
 {
+	if(HasAuthority() && AbilitySystemComponent)
+	{
+		for (TSubclassOf<UPacmanGameplayAbility>& StartupAbility : DefaultAbilities) 
+		{
+			AbilitySystemComponent->GiveAbility(FGameplayAbilitySpec(
+				StartupAbility,
+				1,
+				static_cast<int32>(StartupAbility.GetDefaultObject()->AbilityInputID), 
+				this
+			));
+		}
+	}
+}
 
+void APacmanCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	InitializeAttributes();
+
+	//The server grants the default abilities to Pacman
+	GiveAbilities();
+}
+
+void APacmanCharacter::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	InitializeAttributes();
+
+	//Inits the input for the local player in order to control pacman abilities
+	if (AbilitySystemComponent && InputComponent) 
+	{
+		const FGameplayAbilityInputBinds Binds(
+			"Confirm",
+			"Cancel",
+			"EPacmanAbilityInputID",
+			static_cast<int32>(EPacmanAbilityInputID::Confirm),
+			static_cast<int32>(EPacmanAbilityInputID::Cancel)		
+		);
+
+		AbilitySystemComponent->BindAbilityActivationToInputComponent(InputComponent, Binds);
+	}
 }
 
 void APacmanCharacter::BeginPlay()
@@ -126,6 +170,20 @@ void APacmanCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 
 	}
 
+
+	//Inits the input for the local player in order to control pacman abilities
+	if (AbilitySystemComponent && InputComponent)
+	{
+		const FGameplayAbilityInputBinds Binds(
+			"Confirm",
+			"Cancel",
+			"EPacmanAbilityInputID",
+			static_cast<int32>(EPacmanAbilityInputID::Confirm),
+			static_cast<int32>(EPacmanAbilityInputID::Cancel)
+		);
+
+		AbilitySystemComponent->BindAbilityActivationToInputComponent(InputComponent, Binds);
+	}
 }
 
 void APacmanCharacter::Move(const FInputActionValue& Value)
