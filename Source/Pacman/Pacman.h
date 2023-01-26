@@ -12,3 +12,12 @@ enum class EPacmanAbilityInputID : uint8
 	Cancel,
 	Punch
 };
+
+UENUM(BlueprintType)
+enum class EGhostsAbilityInputID : uint8
+{
+	None,
+	Confirm,
+	Cancel,
+	Boo
+};

@@ -21,6 +21,6 @@ public:
 
 	//Abilities with this set will automatically activate when the input is pressed
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Ability")
-	EPacmanAbilityInputID AbilityInputID = EPacmanAbilityInputID::None;
+	EGhostsAbilityInputID AbilityInputID = EGhostsAbilityInputID::None;
 
 };
