@@ -66,7 +66,9 @@ public:
 	TArray<TSubclassOf<class UPacmanGameplayAbility>> DefaultAbilities;
 
 public:
+	virtual void HealthChanged(const FOnAttributeChangeData& Data);
 	virtual void SpeedChanged(const FOnAttributeChangeData& Data);
+	virtual void PelletsChanged(const FOnAttributeChangeData& Data);
 
 protected:
 

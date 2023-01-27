@@ -75,7 +75,13 @@ void APacmanCharacter::InitializeAttributes()
 	if (HasAuthority())
 	{
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+			Attributes->GetHealthAttribute()).AddUObject(this, &APacmanCharacter::HealthChanged);
+
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
 			Attributes->GetSpeedAttribute()).AddUObject(this, &APacmanCharacter::SpeedChanged);
+
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+			Attributes->GetPelletsAttribute()).AddUObject(this, &APacmanCharacter::PelletsChanged);
 	}
 
 	if(AbilitySystemComponent && DefaultAttributeEffect)
@@ -230,8 +236,18 @@ void APacmanCharacter::Look(const FInputActionValue& Value)
 }
 
 
+void APacmanCharacter::HealthChanged(const FOnAttributeChangeData& Data)
+{
+
+}
+
 void APacmanCharacter::SpeedChanged(const FOnAttributeChangeData& Data)
 {
 	UCharacterMovementComponent* characterMovement = GetCharacterMovement();
 	characterMovement->MaxWalkSpeed = Data.NewValue;
+}
+
+void APacmanCharacter::PelletsChanged(const FOnAttributeChangeData& Data)
+{
+
 }
