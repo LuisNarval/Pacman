@@ -15,6 +15,8 @@
 #include "PacmanGameplayAbility.h"
 #include <GameplayEffectTypes.h>
 #include "Components/BoxComponent.h"
+#include "Pellet.h"
+
 
 //////////////////////////////////////////////////////////////////////////
 // APacmanCharacter
@@ -271,6 +273,13 @@ void APacmanCharacter::OnHitBoxOverlap(UPrimitiveComponent* OverlappedComponent,
 	AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	FString otherName = OtherActor->GetName();
-	UE_LOG(LogTemp, Warning, TEXT("We just collide with : %s"), *otherName);
-
+	
+	if (APellet* Pellet = Cast<APellet>(OtherActor)) 
+	{
+		UE_LOG(LogTemp, Warning, TEXT("We HIT a Pellet!"));
+	}
+	else 
+	{
+		UE_LOG(LogTemp, Error, TEXT("We Hit something : %s"), *otherName);
+	}
 }
