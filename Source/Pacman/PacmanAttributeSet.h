@@ -36,4 +36,19 @@ public:
 	UFUNCTION()
 	virtual void OnRep_Health(const FGameplayAttributeData& OldHealth);
 
+
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_Pellets)
+	FGameplayAttributeData Pellets;
+	ATTRIBUTE_ACCESSORS(UPacmanAttributeSet, Pellets);
+
+	UFUNCTION()
+	virtual void OnRep_Pellets(const FGameplayAttributeData& OldPellets);
+
+
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_Speed)
+	FGameplayAttributeData Speed;
+	ATTRIBUTE_ACCESSORS(UPacmanAttributeSet, Speed);
+
+	UFUNCTION()
+	virtual void OnRep_Speed(const FGameplayAttributeData& OldSpeed);
 };
