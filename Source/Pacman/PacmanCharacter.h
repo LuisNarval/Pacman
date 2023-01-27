@@ -69,6 +69,7 @@ public:
 	virtual void HealthChanged(const FOnAttributeChangeData& Data);
 	virtual void SpeedChanged(const FOnAttributeChangeData& Data);
 	virtual void PelletsChanged(const FOnAttributeChangeData& Data);
+	virtual void MaxHealthChanged(const FOnAttributeChangeData& Data);
 
 protected:
 
@@ -91,5 +92,13 @@ public:
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float CurrentMaxHealth;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float CurrentHealth;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float CurrentPellets;
 };
 

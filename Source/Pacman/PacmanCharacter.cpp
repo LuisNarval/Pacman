@@ -82,8 +82,11 @@ void APacmanCharacter::InitializeAttributes()
 
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
 			Attributes->GetPelletsAttribute()).AddUObject(this, &APacmanCharacter::PelletsChanged);
-	}
 
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+			Attributes->GetMaxHealthAttribute()).AddUObject(this, &APacmanCharacter::MaxHealthChanged);
+	}
+	
 	if(AbilitySystemComponent && DefaultAttributeEffect)
 	{
 		FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
@@ -96,6 +99,7 @@ void APacmanCharacter::InitializeAttributes()
 			FActiveGameplayEffectHandle GEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 		}
 	}
+
 
 }
 
@@ -238,7 +242,7 @@ void APacmanCharacter::Look(const FInputActionValue& Value)
 
 void APacmanCharacter::HealthChanged(const FOnAttributeChangeData& Data)
 {
-
+	CurrentHealth = Data.NewValue;
 }
 
 void APacmanCharacter::SpeedChanged(const FOnAttributeChangeData& Data)
@@ -249,5 +253,10 @@ void APacmanCharacter::SpeedChanged(const FOnAttributeChangeData& Data)
 
 void APacmanCharacter::PelletsChanged(const FOnAttributeChangeData& Data)
 {
+	CurrentPellets = Data.NewValue;
+}
 
+void APacmanCharacter::MaxHealthChanged(const FOnAttributeChangeData& Data)
+{
+	CurrentMaxHealth = Data.NewValue;
 }

@@ -51,4 +51,11 @@ public:
 
 	UFUNCTION()
 	virtual void OnRep_Pellets(const FGameplayAttributeData& OldPellets);
+
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_MaxHealth)
+	FGameplayAttributeData MaxHealth;
+	ATTRIBUTE_ACCESSORS(UPacmanAttributeSet, MaxHealth);
+
+	UFUNCTION()
+	virtual void OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth);
 };

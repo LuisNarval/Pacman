@@ -31,3 +31,8 @@ void UPacmanAttributeSet::OnRep_Pellets(const FGameplayAttributeData& OldPellets
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UPacmanAttributeSet, Pellets, OldPellets);
 }
+
+void UPacmanAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UPacmanAttributeSet, MaxHealth, OldMaxHealth);
+}
