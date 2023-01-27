@@ -14,6 +14,7 @@
 #include "PacmanAttributeSet.h"
 #include "PacmanGameplayAbility.h"
 #include <GameplayEffectTypes.h>
+#include "Components/BoxComponent.h"
 
 //////////////////////////////////////////////////////////////////////////
 // APacmanCharacter
@@ -62,6 +63,11 @@ APacmanCharacter::APacmanCharacter()
 
 	//Create the Attributes for Pacman
 	Attributes = CreateDefaultSubobject<UPacmanAttributeSet>("Attributes");
+
+	//BoxColliders
+	HitBox = CreateDefaultSubobject<UBoxComponent>(TEXT("HitBox"));
+	HitBox-> SetupAttachment(RootComponent);
+	HitBox-> OnComponentBeginOverlap.AddDynamic(this, &APacmanCharacter::OnHitBoxOverlap);
 }
 
 UAbilitySystemComponent* APacmanCharacter::GetAbilitySystemComponent() const
@@ -259,4 +265,12 @@ void APacmanCharacter::PelletsChanged(const FOnAttributeChangeData& Data)
 void APacmanCharacter::MaxHealthChanged(const FOnAttributeChangeData& Data)
 {
 	CurrentMaxHealth = Data.NewValue;
+}
+
+void APacmanCharacter::OnHitBoxOverlap(UPrimitiveComponent* OverlappedComponent, 
+	AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	FString otherName = OtherActor->GetName();
+	UE_LOG(LogTemp, Warning, TEXT("We just collide with : %s"), *otherName);
+
 }
