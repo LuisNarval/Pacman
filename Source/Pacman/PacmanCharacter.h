@@ -48,6 +48,7 @@ class APacmanCharacter : public ACharacter, public IAbilitySystemInterface
 public:
 	APacmanCharacter();
 	
+	//GAS Methods
 	virtual class UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 	virtual void InitializeAttributes();
@@ -63,6 +64,9 @@ public:
 	/*Gameplay abilities for Pacman*/
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
 	TArray<TSubclassOf<class UPacmanGameplayAbility>> DefaultAbilities;
+
+public:
+	virtual void SpeedChanged(const FOnAttributeChangeData& Data);
 
 protected:
 

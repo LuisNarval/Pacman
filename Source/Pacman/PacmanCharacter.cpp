@@ -72,6 +72,12 @@ UAbilitySystemComponent* APacmanCharacter::GetAbilitySystemComponent() const
 //Add the init attributes for Pacman
 void APacmanCharacter::InitializeAttributes()
 {
+	if (HasAuthority())
+	{
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+			Attributes->GetSpeedAttribute()).AddUObject(this, &APacmanCharacter::SpeedChanged);
+	}
+
 	if(AbilitySystemComponent && DefaultAttributeEffect)
 	{
 		FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
@@ -84,6 +90,7 @@ void APacmanCharacter::InitializeAttributes()
 			FActiveGameplayEffectHandle GEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
 		}
 	}
+
 }
 
 void APacmanCharacter::GiveAbilities()
@@ -108,7 +115,6 @@ void APacmanCharacter::PossessedBy(AController* NewController)
 	
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	InitializeAttributes();
-
 	//The server grants the default abilities to Pacman
 	GiveAbilities();
 }
@@ -186,6 +192,7 @@ void APacmanCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 	}
 }
 
+
 void APacmanCharacter::Move(const FInputActionValue& Value)
 {
 	// input is a Vector2D
@@ -223,5 +230,8 @@ void APacmanCharacter::Look(const FInputActionValue& Value)
 }
 
 
-
-
+void APacmanCharacter::SpeedChanged(const FOnAttributeChangeData& Data)
+{
+	UCharacterMovementComponent* characterMovement = GetCharacterMovement();
+	characterMovement->MaxWalkSpeed = Data.NewValue;
+}
