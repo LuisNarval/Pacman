@@ -22,12 +22,12 @@ void UPacmanAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth)
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UPacmanAttributeSet, Health, OldHealth);
 }
 
-void UPacmanAttributeSet::OnRep_Pellets(const FGameplayAttributeData& OldPellets)
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UPacmanAttributeSet, Pellets, OldPellets);
-}
-
 void UPacmanAttributeSet::OnRep_Speed(const FGameplayAttributeData& OldSpeed)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UPacmanAttributeSet, Speed, OldSpeed);
+}
+
+void UPacmanAttributeSet::OnRep_Pellets(const FGameplayAttributeData& OldPellets)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UPacmanAttributeSet, Pellets, OldPellets);
 }
