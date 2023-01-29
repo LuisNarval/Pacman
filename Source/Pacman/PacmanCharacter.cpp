@@ -17,7 +17,6 @@
 #include "Components/BoxComponent.h"
 #include "Pellet.h"
 
-
 //////////////////////////////////////////////////////////////////////////
 // APacmanCharacter
 
@@ -276,10 +275,25 @@ void APacmanCharacter::OnHitBoxOverlap(UPrimitiveComponent* OverlappedComponent,
 	
 	if (APellet* Pellet = Cast<APellet>(OtherActor)) 
 	{
-		UE_LOG(LogTemp, Warning, TEXT("We HIT a Pellet!"));
+		EatPellet(OtherActor);
 	}
 	else 
 	{
 		UE_LOG(LogTemp, Error, TEXT("We Hit something : %s"), *otherName);
 	}
+}
+
+void APacmanCharacter::EatPellet(AActor* OtherActor)
+{
+	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
+	EffectContext.AddSourceObject(this);
+
+	FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(GE_PelletEated, 1, EffectContext);
+
+	if (SpecHandle.IsValid())
+	{
+		FActiveGameplayEffectHandle GEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+	}
+
+	OtherActor->Destroy(true);
 }

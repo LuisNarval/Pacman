@@ -54,6 +54,12 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
 	TSubclassOf<class UGameplayEffect> DefaultAttributeEffect;
 
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
+	TSubclassOf<class UGameplayEffect> GE_PelletEated;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
+	TSubclassOf<class UGameplayEffect> GE_DamageReceived;
+
 	/*Gameplay abilities for Pacman*/
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
 	TArray<TSubclassOf<class UPacmanGameplayAbility>> DefaultAbilities;
@@ -94,6 +100,9 @@ private:
 		int32 OtherBodyIndex, 
 		bool bFromSweep, 
 		const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void EatPellet(AActor* OtherActor);
 
 protected:
 
