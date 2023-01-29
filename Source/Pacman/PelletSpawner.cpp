@@ -1,9 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "PelletSpawner.h"
 #include "Engine/World.h"
-#include "Engine/CurveTable.h"
 #include "Engine/CurveTable.h"
 #include "Engine/EngineTypes.h"
 #include "CoreMinimal.h"
@@ -12,8 +10,7 @@
 APelletSpawner::APelletSpawner()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
+	PrimaryActorTick.bCanEverTick = false;
 }
 
 // Called when the game starts or when spawned
@@ -21,18 +18,8 @@ void APelletSpawner::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	UE_LOG(LogTemp, Error, TEXT("THE SPAWNER STARTED!"));
-
 	ReadStageCurveTable();
-	PrintStageArray();
-	//SpawnPelletsOnStage();
-}
-
-// Called every frame
-void APelletSpawner::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
+	SpawnPelletsOnStage();
 }
 
 void APelletSpawner::ReadStageCurveTable()
@@ -77,7 +64,6 @@ void APelletSpawner::ReadStageCurveTable()
 	}
 }
 
-
 void APelletSpawner::PrintStageArray()
 {
 	UE_LOG(LogTemp, Error, TEXT(" ---------------------------------------------------------------------------") );
@@ -86,7 +72,6 @@ void APelletSpawner::PrintStageArray()
 	UE_LOG(LogTemp, Error, TEXT(" ---------------------------------------------------------------------------") );
 	UE_LOG(LogTemp, Error, TEXT(" ---------------------------------------------------------------------------") );
 
-	
 	for (int i = 0; i < StageArray.Num(); i++) 
 	{
 		UE_LOG(LogTemp, Error, TEXT(" ---------------------------------------------------------------------------") );
@@ -99,18 +84,34 @@ void APelletSpawner::PrintStageArray()
 	}
 }
 
-
 void APelletSpawner::SpawnPelletsOnStage()
 {
-	UWorld* World = GetWorld();
+	World = GetWorld();
 
-	if (World)
+	if (BP_MyActor_Class)
 	{
-		if (BP_MyActor_Class)
+		for (int i = 0; i < StageArray.Num(); i++)
 		{
-			FVector SpawnLocation(0.f, 0.f, 0.f);
-			FRotator SpawnRotation(0.f, 0.f, 0.f);
-			AActor* SpawnedActor = World->SpawnActor<AActor>(BP_MyActor_Class, SpawnLocation, SpawnRotation);
+			for (int j = 0; j < StageArray[i].Num(); j++)
+			{
+				if(StageArray[i][j]>0)
+				{
+					FVector SpawnLocation;
+					SpawnLocation.X = XOffset + (i * XDistance);
+					SpawnLocation.Y = YOffset + (j * YDistance);
+					SpawnLocation.Z = ZOffset;
+
+					SpawnPelletAt(SpawnLocation);
+				}
+			}
 		}
+	}	
+}
+
+void APelletSpawner::SpawnPelletAt(FVector SpawnLocation)
+{
+	if (World) 
+	{
+		AActor* spawnedPellet = World->SpawnActor<AActor>(BP_MyActor_Class, SpawnLocation, FRotator::ZeroRotator);
 	}
 }

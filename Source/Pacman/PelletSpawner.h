@@ -12,14 +12,26 @@ class PACMAN_API APelletSpawner : public AActor
 	GENERATED_BODY()
 
 public:
-UPROPERTY(EditDefaultsOnly, Category = "Spawning")
-class UBlueprintGeneratedClass* BP_MyActor_Class;
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
+	class UBlueprintGeneratedClass* BP_MyActor_Class;
 
-UPROPERTY(EditDefaultsOnly, Category = "Spawning")
-class UCurveTable* StageCurveTable;
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
+	class UCurveTable* StageCurveTable;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
+	float XOffset = 200;
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
+	float YOffset = 200;
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
+	float ZOffset = 0;
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
+	float XDistance = 200;
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
+	float YDistance = 200;
 
 private:
-TArray<TArray<int32>> StageArray;
+	TArray<TArray<int32>> StageArray;
+	UWorld* World;
 
 public:	
 	// Sets default values for this actor's properties
@@ -28,10 +40,6 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 public:
 	UFUNCTION()
@@ -43,4 +51,6 @@ public:
 	UFUNCTION()
 	void SpawnPelletsOnStage();
 
+	UFUNCTION()
+	void SpawnPelletAt(FVector SpawnLocation);
 };
