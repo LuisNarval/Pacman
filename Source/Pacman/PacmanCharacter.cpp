@@ -16,6 +16,10 @@
 #include <GameplayEffectTypes.h>
 #include "Components/BoxComponent.h"
 #include "Pellet.h"
+#include "GameplayTagContainer.h"
+#include "GameplayTagsModule.h"
+#include "AbilitySystemComponent.h"
+
 
 //////////////////////////////////////////////////////////////////////////
 // APacmanCharacter
@@ -274,8 +278,7 @@ void APacmanCharacter::OnHitBoxOverlap(UPrimitiveComponent* OverlappedComponent,
 	
 	if (APellet* Pellet = Cast<APellet>(OtherActor)) 
 	{
-		AbilitySystemComponent->CurrentTarget = OtherActor;
-		CallAbility(EPacmanAbilityInputID::EatPellet);
+		EatPellet(OtherActor);
 	}
 	else 
 	{
@@ -283,20 +286,19 @@ void APacmanCharacter::OnHitBoxOverlap(UPrimitiveComponent* OverlappedComponent,
 	}
 }
 
-/*void APacmanCharacter::EatPellet(AActor* OtherActor)
+void APacmanCharacter::EatPellet(AActor* Pellet)
 {
-	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
-	EffectContext.AddSourceObject(this);
+	CallAbility(EPacmanAbilityInputID::EatPellet);
 
-	FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(GE_PelletEated, 1, EffectContext);
+	FGameplayTag EventTag = FGameplayTag::RequestGameplayTag("Pacman.EatPellet");
 
-	if (SpecHandle.IsValid())
-	{
-		FActiveGameplayEffectHandle GEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
-	}
-
-	OtherActor->Destroy(true);
-}*/
+	FGameplayEventData EventData;
+	EventData.Instigator = this;
+	EventData.Target = Pellet;
+	EventData.EventMagnitude = 1.0f;
+		
+	AbilitySystemComponent->HandleGameplayEvent(EventTag, &EventData);
+}
 
 void APacmanCharacter::CallAbility(EPacmanAbilityInputID AbilityInputID)
 {

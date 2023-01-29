@@ -13,9 +13,4 @@ UCLASS()
 class PACMAN_API UPacmanAbilitySystemComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()
-	
-public:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	AActor* CurrentTarget;
-
 };

@@ -96,6 +96,10 @@ private:
 		bool bFromSweep, 
 		const FHitResult& SweepResult);
 
+
+	UFUNCTION()
+	void EatPellet(AActor* Pellet);
+
 	UFUNCTION()
 	void CallAbility(EPacmanAbilityInputID AbilityInputID);
 
