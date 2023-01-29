@@ -13,7 +13,5 @@ class APacmanGameMode : public AGameModeBase
 
 public:
 	APacmanGameMode();
+
 };
-
-
-
