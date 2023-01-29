@@ -13,7 +13,7 @@ class PACMAN_API APelletSpawner : public AActor
 
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
-	class UBlueprintGeneratedClass* BP_MyActor_Class;
+	class UBlueprintGeneratedClass* BP_Pellet;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
 	class UCurveTable* StageCurveTable;

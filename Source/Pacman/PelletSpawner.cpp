@@ -88,7 +88,7 @@ void APelletSpawner::SpawnPelletsOnStage()
 {
 	World = GetWorld();
 
-	if (BP_MyActor_Class)
+	if (BP_Pellet)
 	{
 		for (int i = 0; i < StageArray.Num(); i++)
 		{
@@ -112,6 +112,6 @@ void APelletSpawner::SpawnPelletAt(FVector SpawnLocation)
 {
 	if (World) 
 	{
-		AActor* spawnedPellet = World->SpawnActor<AActor>(BP_MyActor_Class, SpawnLocation, FRotator::ZeroRotator);
+		AActor* spawnedPellet = World->SpawnActor<AActor>(BP_Pellet, SpawnLocation, FRotator::ZeroRotator);
 	}
 }
