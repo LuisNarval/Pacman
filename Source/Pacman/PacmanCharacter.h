@@ -54,16 +54,11 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
 	TSubclassOf<class UGameplayEffect> DefaultAttributeEffect;
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
-	TSubclassOf<class UGameplayEffect> GE_PelletEated;
-
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
-	TSubclassOf<class UGameplayEffect> GE_DamageReceived;
-
 	/*Gameplay abilities for Pacman*/
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
 	TArray<TSubclassOf<class UPacmanGameplayAbility>> DefaultAbilities;
-
+	
+	//Properties for HUD query
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float CurrentMaxHealth;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -102,7 +97,8 @@ private:
 		const FHitResult& SweepResult);
 
 	UFUNCTION()
-	void EatPellet(AActor* OtherActor);
+	void CallAbility(EPacmanAbilityInputID AbilityInputID);
+
 
 protected:
 

@@ -271,19 +271,19 @@ void APacmanCharacter::MaxHealthChanged(const FOnAttributeChangeData& Data)
 void APacmanCharacter::OnHitBoxOverlap(UPrimitiveComponent* OverlappedComponent, 
 	AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	FString otherName = OtherActor->GetName();
 	
 	if (APellet* Pellet = Cast<APellet>(OtherActor)) 
 	{
-		EatPellet(OtherActor);
+		AbilitySystemComponent->CurrentTarget = OtherActor;
+		CallAbility(EPacmanAbilityInputID::EatPellet);
 	}
 	else 
 	{
-		UE_LOG(LogTemp, Error, TEXT("We Hit something : %s"), *otherName);
+		UE_LOG(LogTemp, Error, TEXT("We Hit something : %s"), *OtherActor->GetName());
 	}
 }
 
-void APacmanCharacter::EatPellet(AActor* OtherActor)
+/*void APacmanCharacter::EatPellet(AActor* OtherActor)
 {
 	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
 	EffectContext.AddSourceObject(this);
@@ -296,4 +296,14 @@ void APacmanCharacter::EatPellet(AActor* OtherActor)
 	}
 
 	OtherActor->Destroy(true);
+}*/
+
+void APacmanCharacter::CallAbility(EPacmanAbilityInputID AbilityInputID)
+{
+	int32 InputID = (int32)AbilityInputID;
+
+	FGameplayAbilitySpec* Spec = AbilitySystemComponent->FindAbilitySpecFromInputID(InputID);
+	FGameplayAbilitySpecHandle AbilitySpecHandle = Spec->Handle;
+
+	AbilitySystemComponent->TryActivateAbility(AbilitySpecHandle, true);
 }
