@@ -26,3 +26,8 @@ void UGhostsAttributeSet::OnRep_BooForce(const FGameplayAttributeData& OldBooFor
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UGhostsAttributeSet, BooForce, OldBooForce);
 }
+
+void UGhostsAttributeSet::OnRep_Vulnerability(const FGameplayAttributeData& OldVulnerability)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UGhostsAttributeSet, Vulnerability, OldVulnerability);
+}

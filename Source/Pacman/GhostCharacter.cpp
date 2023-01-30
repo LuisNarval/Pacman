@@ -11,6 +11,9 @@
 #include "PacmanCharacter.h"
 #include "Abilities/GameplayAbilityTargetTypes.h"
 
+#include "AbilitySystemComponent.h"
+
+
 
 // Sets default values
 AGhostCharacter::AGhostCharacter()
@@ -39,6 +42,12 @@ UAbilitySystemComponent* AGhostCharacter::GetAbilitySystemComponent() const
 
 void AGhostCharacter::InitializeAttributes()
 {
+	if (HasAuthority()) 
+	{
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+			Attributes->GetVulnerabilityAttribute()).AddUObject(this, &AGhostCharacter::VulnerabilityChanged);
+	}
+
 	if (AbilitySystemComponent && DefaultAttributeEffect)
 	{
 		FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
@@ -88,6 +97,17 @@ void AGhostCharacter::OnRep_PlayerState()
 	InitializeAttributes();
 }
 
+void AGhostCharacter::VulnerabilityChanged(const FOnAttributeChangeData& Data)
+{
+	if(Data.NewValue > 0)
+	{
+		IsVulnerable = true;
+	}
+	else
+	{
+		IsVulnerable = false;
+	}
+}
 
 // Called when the game starts or when spawned
 void AGhostCharacter::BeginPlay()
@@ -137,8 +157,8 @@ void AGhostCharacter::OnHitBoxOverlap(UPrimitiveComponent* OverlappedComponent,
 
 void AGhostCharacter::ReturnToOrigin() 
 {
-	GetOwner()->SetActorLocation(StartLocation);
-	GetOwner()->SetActorRotation(StartRotation);
+	SetActorLocation(StartLocation);
+	SetActorRotation(StartRotation);
 }
 
 void AGhostCharacter::MakeBoo(AActor* Enemy)

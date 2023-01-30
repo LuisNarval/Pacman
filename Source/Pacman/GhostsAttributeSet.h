@@ -46,4 +46,13 @@ public:
 
 	UFUNCTION()
 	virtual void OnRep_BooForce(const FGameplayAttributeData& OldBooForce);
+
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_Vulnerability)
+	FGameplayAttributeData Vulnerability;
+
+	ATTRIBUTE_ACCESSORS(UGhostsAttributeSet, Vulnerability);
+
+	UFUNCTION()
+	virtual void OnRep_Vulnerability(const FGameplayAttributeData& OldVulnerability);
 };
