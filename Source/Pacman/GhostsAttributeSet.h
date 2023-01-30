@@ -38,4 +38,12 @@ public:
 	UFUNCTION()
 	virtual void OnRep_Health(const FGameplayAttributeData& OldHealth);
 
+
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_BooForce)
+	FGameplayAttributeData BooForce;
+
+	ATTRIBUTE_ACCESSORS(UGhostsAttributeSet, BooForce);
+
+	UFUNCTION()
+	virtual void OnRep_BooForce(const FGameplayAttributeData& OldBooForce);
 };

@@ -19,6 +19,8 @@ class PACMAN_API AGhostCharacter : public ACharacter, public IAbilitySystemInter
 	UPROPERTY()
 	class UGhostsAttributeSet* Attributes;
 
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	class UBoxComponent* BoxCollider;
 
 public:
 
@@ -29,6 +31,13 @@ public:
 	/*Gameplay abilities for Pacman*/
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
 	TArray<TSubclassOf<class UGhostsGameplayAbility>> DefaultAbilities;
+
+private:
+	UPROPERTY()
+	bool IsVulnerable;
+
+	FVector StartLocation;
+	FRotator StartRotation;
 
 public:
 	// Sets default values for this character's properties
@@ -52,5 +61,25 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+
+private:
+	UFUNCTION()
+	void OnHitBoxOverlap(
+		UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void CallAbility(EGhostsAbilityInputID AbilityInputID);
+
+	UFUNCTION()
+	void ReturnToOrigin();
+
+	UFUNCTION()
+	void MakeBoo(AActor* Enemy);
 
 };

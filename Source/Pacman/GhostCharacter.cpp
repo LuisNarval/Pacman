@@ -7,6 +7,11 @@
 #include "GhostsGameplayAbility.h"
 #include <GameplayEffectTypes.h>
 
+#include "Components/BoxComponent.h"
+#include "PacmanCharacter.h"
+#include "Abilities/GameplayAbilityTargetTypes.h"
+
+
 // Sets default values
 AGhostCharacter::AGhostCharacter()
 {
@@ -20,6 +25,11 @@ AGhostCharacter::AGhostCharacter()
 
 	//Create the Attributes for Pacman
 	Attributes = CreateDefaultSubobject<UGhostsAttributeSet>("Attributes");
+
+	//BoxColliders
+	BoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Hit Box"));
+	BoxCollider->SetupAttachment(RootComponent);
+	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &AGhostCharacter::OnHitBoxOverlap);
 }
 
 UAbilitySystemComponent* AGhostCharacter::GetAbilitySystemComponent() const
@@ -83,7 +93,9 @@ void AGhostCharacter::OnRep_PlayerState()
 void AGhostCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	IsVulnerable = false;
+	StartLocation = GetActorLocation();
+	StartRotation = GetActorRotation();
 }
 
 // Called every frame
@@ -98,4 +110,57 @@ void AGhostCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void AGhostCharacter::OnHitBoxOverlap(UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+
+	UE_LOG(LogTemp, Warning, TEXT("Collision something !!"));
+
+	if (APacmanCharacter* PacmanCharacter = Cast<APacmanCharacter>(OtherActor))
+	{
+		UE_LOG(LogTemp, Error, TEXT("Collision with PACMAN !!"));
+
+		if (IsVulnerable)
+		{
+			UE_LOG(LogTemp, Error, TEXT("Vulnerable!!"));
+			ReturnToOrigin();
+		}
+		else 
+		{
+			UE_LOG(LogTemp, Warning, TEXT("UnVulnerable!!"));
+			MakeBoo(OtherActor);
+		}
+	}
+}
+
+void AGhostCharacter::ReturnToOrigin() 
+{
+	GetOwner()->SetActorLocation(StartLocation);
+	GetOwner()->SetActorRotation(StartRotation);
+}
+
+void AGhostCharacter::MakeBoo(AActor* Enemy)
+{
+	CallAbility(EGhostsAbilityInputID::Boo);
+
+	FGameplayTag EventTag = FGameplayTag::RequestGameplayTag("Ghost.Boo");
+
+	FGameplayEventData EventData;
+	EventData.Instigator = this;
+	EventData.Target = Enemy;
+	EventData.EventMagnitude = 1.0f;
+
+	AbilitySystemComponent->HandleGameplayEvent(EventTag, &EventData);
+}
+
+void AGhostCharacter::CallAbility(EGhostsAbilityInputID AbilityInputID)
+{
+	int32 InputID = (int32)AbilityInputID;
+
+	FGameplayAbilitySpec* Spec = AbilitySystemComponent->FindAbilitySpecFromInputID(InputID);
+	FGameplayAbilitySpecHandle AbilitySpecHandle = Spec->Handle;
+
+	AbilitySystemComponent->TryActivateAbility(AbilitySpecHandle, true);
 }

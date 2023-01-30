@@ -21,3 +21,8 @@ void UGhostsAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UGhostsAttributeSet, Health, OldHealth);
 }
+
+void UGhostsAttributeSet::OnRep_BooForce(const FGameplayAttributeData& OldBooForce)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UGhostsAttributeSet, BooForce, OldBooForce);
+}
