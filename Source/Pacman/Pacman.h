@@ -11,7 +11,8 @@ enum class EPacmanAbilityInputID : uint8
 	Confirm,
 	Cancel,
 	Punch,
-	EatPellet
+	EatPellet, 
+	TurboSpeed
 };
 
 UENUM(BlueprintType)
