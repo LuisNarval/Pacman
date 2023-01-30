@@ -66,6 +66,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float CurrentPellets;
 
+
 public:
 	APacmanCharacter();
 	
