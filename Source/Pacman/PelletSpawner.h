@@ -16,6 +16,9 @@ public:
 	class UBlueprintGeneratedClass* BP_Pellet;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
+	class UBlueprintGeneratedClass* BP_SpecialPellet;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
 	class UCurveTable* StageCurveTable;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
@@ -52,5 +55,5 @@ public:
 	void SpawnPelletsOnStage();
 
 	UFUNCTION()
-	void SpawnPelletAt(FVector SpawnLocation);
+	void SpawnPelletAt(FVector SpawnLocation, int32 PelletType);
 };

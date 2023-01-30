@@ -101,17 +101,24 @@ void APelletSpawner::SpawnPelletsOnStage()
 					SpawnLocation.Y = YOffset + (j * YDistance);
 					SpawnLocation.Z = ZOffset;
 
-					SpawnPelletAt(SpawnLocation);
+					SpawnPelletAt(SpawnLocation, StageArray[i][j]);
 				}
 			}
 		}
 	}	
 }
 
-void APelletSpawner::SpawnPelletAt(FVector SpawnLocation)
+void APelletSpawner::SpawnPelletAt(FVector SpawnLocation, int32 PelletType)
 {
 	if (World) 
 	{
-		AActor* spawnedPellet = World->SpawnActor<AActor>(BP_Pellet, SpawnLocation, FRotator::ZeroRotator);
+		if(PelletType == 1)
+		{
+			AActor* spawnedPellet = World->SpawnActor<AActor>(BP_Pellet, SpawnLocation, FRotator::ZeroRotator);
+		}
+		if (PelletType == 2)
+		{
+			AActor* spawnedPellet = World->SpawnActor<AActor>(BP_SpecialPellet, SpawnLocation, FRotator::ZeroRotator);
+		}
 	}
 }

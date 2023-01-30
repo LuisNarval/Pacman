@@ -16,6 +16,7 @@
 #include <GameplayEffectTypes.h>
 #include "Components/BoxComponent.h"
 #include "Pellet.h"
+#include "SpecialPellet.h"
 #include "GameplayTagContainer.h"
 #include "GameplayTagsModule.h"
 #include "AbilitySystemComponent.h"
@@ -280,7 +281,11 @@ void APacmanCharacter::OnHitBoxOverlap(UPrimitiveComponent* OverlappedComponent,
 	{
 		EatPellet(OtherActor);
 	}
-	else 
+	else if (ASpecialPellet* SpecialPellet = Cast<ASpecialPellet>(OtherActor))
+	{
+		EatSpecialPellet(OtherActor);
+	}
+	else
 	{
 		UE_LOG(LogTemp, Error, TEXT("We Hit something : %s"), *OtherActor->GetName());
 	}
@@ -297,6 +302,20 @@ void APacmanCharacter::EatPellet(AActor* Pellet)
 	EventData.Target = Pellet;
 	EventData.EventMagnitude = 1.0f;
 		
+	AbilitySystemComponent->HandleGameplayEvent(EventTag, &EventData);
+}
+
+void APacmanCharacter::EatSpecialPellet(AActor* Pellet)
+{
+	CallAbility(EPacmanAbilityInputID::EatSpecialPellet);
+
+	FGameplayTag EventTag = FGameplayTag::RequestGameplayTag("Pacman.EatSpecialPellet");
+
+	FGameplayEventData EventData;
+	EventData.Instigator = this;
+	EventData.Target = Pellet;
+	EventData.EventMagnitude = 1.0f;
+
 	AbilitySystemComponent->HandleGameplayEvent(EventTag, &EventData);
 }
 

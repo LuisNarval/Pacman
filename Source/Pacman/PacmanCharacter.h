@@ -79,8 +79,6 @@ public:
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void OnRep_PlayerState() override;
 
-	
-
 public:
 	virtual void HealthChanged(const FOnAttributeChangeData& Data);
 	virtual void SpeedChanged(const FOnAttributeChangeData& Data);
@@ -100,6 +98,9 @@ private:
 
 	UFUNCTION()
 	void EatPellet(AActor* Pellet);
+
+	UFUNCTION()
+	void EatSpecialPellet(AActor* Pellet);
 
 	UFUNCTION()
 	void CallAbility(EPacmanAbilityInputID AbilityInputID);

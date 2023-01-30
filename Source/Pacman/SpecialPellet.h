@@ -4,22 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Pellet.generated.h"
+#include "SpecialPellet.generated.h"
 
 UCLASS()
-class PACMAN_API APellet : public AActor
+class PACMAN_API ASpecialPellet : public AActor
 {
 	GENERATED_BODY()
 	
-UPROPERTY(VisibleAnywhere, Category = "Components")
-class UStaticMeshComponent* PelletMesh;
-
 public:	
 	// Sets default values for this actor's properties
-	APellet();
+	ASpecialPellet();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
+
 };
