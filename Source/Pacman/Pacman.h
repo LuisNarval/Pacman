@@ -22,5 +22,6 @@ enum class EGhostsAbilityInputID : uint8
 	None,
 	Confirm,
 	Cancel,
-	Boo
+	Boo,
+	Die
 };

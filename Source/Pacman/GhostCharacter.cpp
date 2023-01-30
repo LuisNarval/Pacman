@@ -34,8 +34,8 @@ AGhostCharacter::AGhostCharacter()
 	BoxCollider->SetupAttachment(RootComponent);
 	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &AGhostCharacter::OnHitBoxOverlap);
 
-	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("GhostAudio"));
-	AudioComponent-> SetupAttachment(RootComponent);
+	Audio = CreateDefaultSubobject<UAudioComponent>(TEXT("WalkAudio"));
+	Audio->SetupAttachment(RootComponent);
 }
 
 UAbilitySystemComponent* AGhostCharacter::GetAbilitySystemComponent() const
@@ -148,7 +148,7 @@ void AGhostCharacter::OnHitBoxOverlap(UPrimitiveComponent* OverlappedComponent,
 		if (IsVulnerable)
 		{
 			UE_LOG(LogTemp, Error, TEXT("Vulnerable!!"));
-			ReturnToOrigin();
+			Die();
 		}
 		else 
 		{
@@ -156,12 +156,6 @@ void AGhostCharacter::OnHitBoxOverlap(UPrimitiveComponent* OverlappedComponent,
 			MakeBoo(OtherActor);
 		}
 	}
-}
-
-void AGhostCharacter::ReturnToOrigin() 
-{
-	SetActorLocation(StartLocation);
-	SetActorRotation(StartRotation);
 }
 
 void AGhostCharacter::MakeBoo(AActor* Enemy)
@@ -173,6 +167,23 @@ void AGhostCharacter::MakeBoo(AActor* Enemy)
 	FGameplayEventData EventData;
 	EventData.Instigator = this;
 	EventData.Target = Enemy;
+	EventData.EventMagnitude = 1.0f;
+
+	AbilitySystemComponent->HandleGameplayEvent(EventTag, &EventData);
+}
+
+void AGhostCharacter::Die() 
+{
+	SetActorLocation(StartLocation);
+	SetActorRotation(StartRotation);
+
+	CallAbility(EGhostsAbilityInputID::Die);
+
+	FGameplayTag EventTag = FGameplayTag::RequestGameplayTag("Ghost.Die");
+
+	FGameplayEventData EventData;
+	EventData.Instigator = this;
+	EventData.Target = this;
 	EventData.EventMagnitude = 1.0f;
 
 	AbilitySystemComponent->HandleGameplayEvent(EventTag, &EventData);

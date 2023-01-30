@@ -21,12 +21,11 @@ class PACMAN_API AGhostCharacter : public ACharacter, public IAbilitySystemInter
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	class UBoxComponent* BoxCollider;
-
-
+	
 public:
-	UPROPERTY(VisibleAnywhere, Category = "Components")
-	class UAudioComponent* AudioComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
+	class UAudioComponent* Audio;
 
 public:
 
@@ -86,7 +85,7 @@ private:
 	void CallAbility(EGhostsAbilityInputID AbilityInputID);
 
 	UFUNCTION()
-	void ReturnToOrigin();
+	void Die();
 
 	UFUNCTION()
 	void MakeBoo(AActor* Enemy);
