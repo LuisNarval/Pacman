@@ -12,7 +12,7 @@
 #include "Abilities/GameplayAbilityTargetTypes.h"
 
 #include "AbilitySystemComponent.h"
-
+#include "Components/AudioComponent.h"
 
 
 // Sets default values
@@ -33,6 +33,9 @@ AGhostCharacter::AGhostCharacter()
 	BoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Hit Box"));
 	BoxCollider->SetupAttachment(RootComponent);
 	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &AGhostCharacter::OnHitBoxOverlap);
+
+	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("GhostAudio"));
+	AudioComponent-> SetupAttachment(RootComponent);
 }
 
 UAbilitySystemComponent* AGhostCharacter::GetAbilitySystemComponent() const

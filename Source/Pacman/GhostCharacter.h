@@ -22,6 +22,12 @@ class PACMAN_API AGhostCharacter : public ACharacter, public IAbilitySystemInter
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	class UBoxComponent* BoxCollider;
 
+
+public:
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	class UAudioComponent* AudioComponent;
+
+
 public:
 
 	/*Effect that initializes the default attributes for Pacman*/
