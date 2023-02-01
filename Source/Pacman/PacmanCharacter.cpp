@@ -97,6 +97,9 @@ void APacmanCharacter::InitializeAttributes()
 
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
 			Attributes->GetMaxHealthAttribute()).AddUObject(this, &APacmanCharacter::MaxHealthChanged);
+
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+			Attributes->GetPelletsEatedAttribute()).AddUObject(this, &APacmanCharacter::PelletsEatedChanged);
 	}
 	
 	if(AbilitySystemComponent && DefaultAttributeEffect)
@@ -214,7 +217,6 @@ void APacmanCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 	}
 }
 
-
 void APacmanCharacter::Move(const FInputActionValue& Value)
 {
 	// input is a Vector2D
@@ -251,10 +253,16 @@ void APacmanCharacter::Look(const FInputActionValue& Value)
 	}
 }
 
-
+//////////////////////////////////////////////////////////////////////////
+// Changes
 void APacmanCharacter::HealthChanged(const FOnAttributeChangeData& Data)
 {
 	CurrentHealth = Data.NewValue;
+
+	if (CurrentHealth <= 0)
+	{
+		OnPacmanLose();
+	}
 }
 
 void APacmanCharacter::SpeedChanged(const FOnAttributeChangeData& Data)
@@ -271,6 +279,17 @@ void APacmanCharacter::PelletsChanged(const FOnAttributeChangeData& Data)
 void APacmanCharacter::MaxHealthChanged(const FOnAttributeChangeData& Data)
 {
 	CurrentMaxHealth = Data.NewValue;
+}
+
+void APacmanCharacter::PelletsEatedChanged(const FOnAttributeChangeData& Data)
+{
+	UE_LOG(LogTemp, Error, TEXT("Pellets to win : %f"), PelletsToWin);
+	UE_LOG(LogTemp, Error, TEXT("Current pellets : %f"), Data.NewValue);
+
+	if (Data.NewValue >= PelletsToWin)
+	{
+		OnPacmanWins();
+	}
 }
 
 void APacmanCharacter::OnHitBoxOverlap(UPrimitiveComponent* OverlappedComponent, 
@@ -327,3 +346,5 @@ void APacmanCharacter::CallAbility(EPacmanAbilityInputID AbilityInputID)
 
 	AbilitySystemComponent->TryActivateAbility(AbilitySpecHandle, true);
 }
+
+

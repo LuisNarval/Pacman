@@ -32,6 +32,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
 	float YDistance = 200;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Spawning")
+	float PelletsToWin = 0;
+
 private:
 	TArray<TArray<int32>> StageArray;
 	UWorld* World;

@@ -66,6 +66,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float CurrentPellets;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	float PelletsToWin = 10;
+
 
 public:
 	APacmanCharacter();
@@ -84,6 +87,7 @@ public:
 	virtual void SpeedChanged(const FOnAttributeChangeData& Data);
 	virtual void PelletsChanged(const FOnAttributeChangeData& Data);
 	virtual void MaxHealthChanged(const FOnAttributeChangeData& Data);
+	virtual void PelletsEatedChanged(const FOnAttributeChangeData& Data);
 
 private:
 	UFUNCTION()
@@ -105,6 +109,12 @@ private:
 	UFUNCTION()
 	void CallAbility(EPacmanAbilityInputID AbilityInputID);
 
+public:
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Events")
+	void OnPacmanWins();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Events")
+	void OnPacmanLose();
 
 protected:
 
@@ -128,6 +138,6 @@ public:
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
+	
 
 };
-

@@ -115,10 +115,12 @@ void APelletSpawner::SpawnPelletAt(FVector SpawnLocation, int32 PelletType)
 		if(PelletType == 1)
 		{
 			AActor* spawnedPellet = World->SpawnActor<AActor>(BP_Pellet, SpawnLocation, FRotator::ZeroRotator);
+			PelletsToWin++;
 		}
 		if (PelletType == 2)
 		{
 			AActor* spawnedPellet = World->SpawnActor<AActor>(BP_SpecialPellet, SpawnLocation, FRotator::ZeroRotator);
+			PelletsToWin++;
 		}
 	}
 }
