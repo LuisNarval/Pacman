@@ -33,9 +33,6 @@ AGhostCharacter::AGhostCharacter()
 	BoxCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("Hit Box"));
 	BoxCollider->SetupAttachment(RootComponent);
 	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &AGhostCharacter::OnHitBoxOverlap);
-
-	Audio = CreateDefaultSubobject<UAudioComponent>(TEXT("WalkAudio"));
-	Audio->SetupAttachment(RootComponent);
 }
 
 UAbilitySystemComponent* AGhostCharacter::GetAbilitySystemComponent() const

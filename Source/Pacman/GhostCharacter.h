@@ -24,11 +24,6 @@ class PACMAN_API AGhostCharacter : public ACharacter, public IAbilitySystemInter
 	
 public:
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Components")
-	class UAudioComponent* Audio;
-
-public:
-
 	/*Effect that initializes the default attributes for Pacman*/
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS")
 	TSubclassOf<class UGameplayEffect> DefaultAttributeEffect;
