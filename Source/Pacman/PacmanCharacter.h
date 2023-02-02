@@ -65,10 +65,10 @@ public:
 	float CurrentHealth;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float CurrentPellets;
-
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	float CurrentImmunityTime;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	float PelletsToWin = 10;
-
 
 public:
 	APacmanCharacter();
@@ -87,6 +87,7 @@ public:
 	virtual void SpeedChanged(const FOnAttributeChangeData& Data);
 	virtual void PelletsChanged(const FOnAttributeChangeData& Data);
 	virtual void MaxHealthChanged(const FOnAttributeChangeData& Data);
+	virtual void ImmunityTimeChanged(const FOnAttributeChangeData& Data);
 	virtual void PelletsEatedChanged(const FOnAttributeChangeData& Data);
 
 private:
@@ -115,6 +116,9 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Events")
 	void OnPacmanLose();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Events")
+	void OnImmunityGain();
 
 protected:
 

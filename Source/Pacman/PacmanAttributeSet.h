@@ -53,7 +53,6 @@ public:
 	virtual void OnRep_Pellets(const FGameplayAttributeData& OldPellets);
 
 
-
 	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_MaxHealth)
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS(UPacmanAttributeSet, MaxHealth);
@@ -62,11 +61,18 @@ public:
 	virtual void OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth);
 
 
-
 	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_PelletsEated)
 	FGameplayAttributeData PelletsEated;
 	ATTRIBUTE_ACCESSORS(UPacmanAttributeSet, PelletsEated);
 
 	UFUNCTION()
 	virtual void OnRep_PelletsEated(const FGameplayAttributeData& OldPelletsEated);
+
+
+	UPROPERTY(BlueprintReadOnly, Category = "Attributes", ReplicatedUsing = OnRep_ImmunityTime)
+	FGameplayAttributeData ImmunityTime;
+	ATTRIBUTE_ACCESSORS(UPacmanAttributeSet, ImmunityTime);
+
+	UFUNCTION()
+	virtual void OnRep_ImmunityTime(const FGameplayAttributeData& OldImmunityTime);
 };

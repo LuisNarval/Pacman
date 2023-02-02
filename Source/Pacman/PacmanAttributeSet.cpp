@@ -41,3 +41,8 @@ void UPacmanAttributeSet::OnRep_PelletsEated(const FGameplayAttributeData& OldPe
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UPacmanAttributeSet, PelletsEated, OldPelletsEated);
 }
+
+void UPacmanAttributeSet::OnRep_ImmunityTime(const FGameplayAttributeData& OldImmunityTime)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UPacmanAttributeSet, ImmunityTime, OldImmunityTime);
+}

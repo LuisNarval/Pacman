@@ -99,6 +99,9 @@ void APacmanCharacter::InitializeAttributes()
 			Attributes->GetMaxHealthAttribute()).AddUObject(this, &APacmanCharacter::MaxHealthChanged);
 
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+			Attributes->GetImmunityTimeAttribute()).AddUObject(this, &APacmanCharacter::ImmunityTimeChanged);
+
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
 			Attributes->GetPelletsEatedAttribute()).AddUObject(this, &APacmanCharacter::PelletsEatedChanged);
 	}
 	
@@ -281,11 +284,13 @@ void APacmanCharacter::MaxHealthChanged(const FOnAttributeChangeData& Data)
 	CurrentMaxHealth = Data.NewValue;
 }
 
+void APacmanCharacter::ImmunityTimeChanged(const FOnAttributeChangeData& Data)
+{
+	CurrentImmunityTime = Data.NewValue;
+}
+
 void APacmanCharacter::PelletsEatedChanged(const FOnAttributeChangeData& Data)
 {
-	UE_LOG(LogTemp, Error, TEXT("Pellets to win : %f"), PelletsToWin);
-	UE_LOG(LogTemp, Error, TEXT("Current pellets : %f"), Data.NewValue);
-
 	if (Data.NewValue >= PelletsToWin)
 	{
 		OnPacmanWins();
@@ -325,6 +330,8 @@ void APacmanCharacter::EatPellet(AActor* Pellet)
 
 void APacmanCharacter::EatSpecialPellet(AActor* Pellet)
 {
+	OnImmunityGain();
+
 	CallAbility(EPacmanAbilityInputID::EatSpecialPellet);
 
 	FGameplayTag EventTag = FGameplayTag::RequestGameplayTag("Pacman.EatSpecialPellet");
